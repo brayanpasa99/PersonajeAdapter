@@ -2,7 +2,7 @@ import pygame
 import sys
 from pygame.locals import *
 
-from Personaje.Jocker import *
+from Jocker import *
 
 SCREEN_WIDTH = 450
 SCREEN_HEIGHT = 237
@@ -32,7 +32,7 @@ def juego():
             for x in Jock.listaDisparo:
                 x.dibuja(screen)
                 x.shoot()
-                if x.rect.left<-10:
+                if x.rect.left>SCREEN_WIDTH:
                     Jock.listaDisparo.remove(x)
 
         for event in pygame.event.get():
@@ -42,7 +42,7 @@ def juego():
         teclas = pygame.key.get_pressed()
         if teclas[K_SPACE]:
             pygame.mixer.music.play(1)
-            x,y = Jock.rect.center
+            x,y = Jock.rect.x,Jock.rect.y
             Jock.disparando(x,y)
         pygame.display.update()
 

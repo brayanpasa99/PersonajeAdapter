@@ -1,5 +1,5 @@
 import pygame, sys
-from Personaje.Bang import *
+from Bang import *
 
 
 class Jocker(pygame.sprite.Sprite):
@@ -10,8 +10,8 @@ class Jocker(pygame.sprite.Sprite):
 
         self.rect = self.ImagenPersonaje.get_rect()
 
-        self.rect.centerx = 200
-        self.rect.centery = 100
+        self.rect.x = 20
+        self.rect.y = 10
 
         self.listaDisparo = []
 
