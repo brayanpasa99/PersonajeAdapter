@@ -1,67 +1,51 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# Licencia: X11/MIT license http://www.opensource.org/licenses/mit-license.php
-
-# ---------------------------
-# Importacion de los módulos
-# ---------------------------
-
 import pygame
-from pygame.locals import *
 import sys
+from pygame.locals import *
 
-# -----------
-# Constantes
-# -----------
+from Personaje.Jocker import *
 
 SCREEN_WIDTH = 450
 SCREEN_HEIGHT = 237
 
-# ------------------------------
-# Clases y Funciones utilizadas
-# ------------------------------
 
-
-# ------------------------------
-# Funcion principal del juego
-# ------------------------------
-
-def main():
+def juego():
     pygame.init()
     # creamos la ventana y le indicamos un titulo:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Personaje")
 
     # cargamos el fondo y una imagen (se crea objetos "Surface")
-    fondo = pygame.image.load("F:/Proyectos Python/Personaje/Imagenes/fondo.jpg").convert()
-    personaje = pygame.image.load("F:/Proyectos Python/Personaje/Imagenes/Guason.png").convert_alpha()
-    disparo = pygame.image.load("F:/Proyectos Python/Personaje/Imagenes/disparo.png").convert_alpha()
-    risajoker = pygame.mixer.music.load("F:/Proyectos Python/Personaje/Sonido/joker.mp3")
+    fondo = pygame.image.load("../Imagenes/fondo.jpg").convert()
+    risajoker = pygame.mixer.music.load("../Sonido/joker.mp3")
 
-    # Indicamos la posicion de las "Surface" sobre la ventana
-    screen.blit(fondo, (0, 0))
-    screen.blit(personaje, (50, 10))
-    # se muestran lo cambios en pantalla
-    pygame.display.flip()
-
-    #El bucle principal del juego
+    # El bucle principal del juego
 
     ejecutando = True
+
+    Jock = Jocker()
     while ejecutando:
+
+        screen.blit(fondo, (0, 0))
+        Jock.dibuja(screen)
+
+        if len(Jock.listaDisparo)>0:
+            for x in Jock.listaDisparo:
+                x.dibuja(screen)
+                x.shoot()
+                if x.rect.left<-10:
+                    Jock.listaDisparo.remove(x)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                ejecutando = False
                 sys.exit()
 
         teclas = pygame.key.get_pressed()
         if teclas[K_SPACE]:
-
             pygame.mixer.music.play(1)
-            screen.blit(disparo, (50, 10))
-            pygame.display.flip()
+            x,y = Jock.rect.center
+            Jock.disparando(x,y)
+        pygame.display.update()
 
 
-if __name__ == "__main__":
-    main()
+# Llamada a la función principal
+juego()
